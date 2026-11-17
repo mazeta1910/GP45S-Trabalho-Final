@@ -1,5 +1,7 @@
 # GP45S — Trabalho Final (GDP)
 
+Trabalho final da disciplina de Gestão de Projetos de Software (GP45S).
+
 Protótipo web de jogo narrativo com escolhas morais.  
 Stack: **HTML + CSS + JavaScript + JSON** (sem Unity).
 
