@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GDP — Interface de escolhas morais</title>
+  <link rel="stylesheet" href="css/interface.css" />
+</head>
+<body>
+  <main class="area-jogo" aria-label="Área do jogo">
+    <div class="cenario" aria-hidden="true"></div>
+
+    <section class="caixa-dialogo" aria-live="polite">
+      <p id="texto-cena" class="texto-cena">Carregando cena…</p>
+      <div id="area-escolhas" class="area-escolhas" role="group" aria-label="Escolhas"></div>
+    </section>
+  </main>
+
+  <p id="mensagem-erro" class="mensagem-erro" hidden></p>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

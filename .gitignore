@@ -1,0 +1,21 @@
+# Dependências / cache
+node_modules/
+.npm/
+.cache/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# Compactados e builds locais
+*.rar
+*.zip
+*.7z
+dist/
+build/
+
+# Legado Unity (fora do MVP web)
+ScriptsUnity/

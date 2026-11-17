@@ -1,0 +1,41 @@
+{
+  "cenaInicial": "cena_01",
+  "cenas": [
+    {
+      "id": "cena_01",
+      "texto": "Na estrada, um estranho ferido pede ajuda. Ao longe, você ouve os passos de quem o persegue.",
+      "escolhas": [
+        { "id": "a", "texto": "Ajudar o estranho", "proxima": "cena_02" },
+        { "id": "b", "texto": "Seguir viagem", "proxima": "cena_03" },
+        { "id": "c", "texto": "Esconder-se e observar", "proxima": "cena_04" }
+      ]
+    },
+    {
+      "id": "cena_02",
+      "texto": "Você ajuda o estranho a se levantar. Ele agradece e promete retribuir um dia.",
+      "escolhas": [
+        { "id": "a", "texto": "Continuar", "proxima": "fim" }
+      ]
+    },
+    {
+      "id": "cena_03",
+      "texto": "Você segue em frente. Os gritos atrás de você ficam cada vez mais distantes.",
+      "escolhas": [
+        { "id": "a", "texto": "Continuar", "proxima": "fim" }
+      ]
+    },
+    {
+      "id": "cena_04",
+      "texto": "Escondido, você vê os perseguidores passarem. Eles usam o brasão da guarda real.",
+      "escolhas": [
+        { "id": "a", "texto": "Seguir os guardas", "proxima": "fim" },
+        { "id": "b", "texto": "Voltar para o estranho", "proxima": "cena_02" }
+      ]
+    },
+    {
+      "id": "fim",
+      "texto": "Fim da demonstração.",
+      "escolhas": []
+    }
+  ]
+}

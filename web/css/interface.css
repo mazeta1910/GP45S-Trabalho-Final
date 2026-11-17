@@ -1,0 +1,121 @@
+:root {
+  --fundo: #1a1f2a;
+  --caixa: rgba(12, 14, 20, 0.82);
+  --texto: #f2f0ea;
+  --texto-suave: #c8c4b8;
+  --botao: #2a3344;
+  --botao-borda: #4a5568;
+  --botao-hover: #3a465c;
+  --erro: #f0b4b4;
+  --fonte: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--fonte);
+  background: #0d1016;
+  color: var(--texto);
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+}
+
+.area-jogo {
+  position: relative;
+  width: min(100vw, 1920px);
+  height: min(100vh, 1080px);
+  aspect-ratio: 16 / 9;
+  max-height: 100vh;
+  overflow: hidden;
+  background: var(--fundo);
+}
+
+.cenario {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.15), rgba(10, 12, 18, 0.55)),
+    radial-gradient(ellipse at 30% 40%, #3d4a3a 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 60%, #2c3a4a 0%, transparent 50%),
+    #24302a;
+}
+
+.caixa-dialogo {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: 4%;
+  min-height: 22%;
+  max-height: 36%;
+  padding: 1rem 1.25rem;
+  background: var(--caixa);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.texto-cena {
+  font-size: clamp(0.95rem, 1.4vw, 1.25rem);
+  line-height: 1.45;
+  color: var(--texto);
+}
+
+.area-escolhas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.botao-escolha {
+  appearance: none;
+  border: 1px solid var(--botao-borda);
+  background: var(--botao);
+  color: var(--texto);
+  font: inherit;
+  font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+  line-height: 1.2;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  min-height: 2rem;
+  max-width: 100%;
+}
+
+.botao-escolha:hover,
+.botao-escolha:focus-visible {
+  background: var(--botao-hover);
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.botao-escolha:active {
+  transform: translateY(1px);
+}
+
+.mensagem-erro {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4a1f1f;
+  color: var(--erro);
+  border: 1px solid #7a3434;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  z-index: 10;
+}
+
+@media (max-width: 1280px) {
+  .caixa-dialogo {
+    min-height: 26%;
+  }
+}
