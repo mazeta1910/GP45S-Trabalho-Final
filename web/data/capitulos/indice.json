@@ -1,0 +1,15 @@
+{
+  "capituloInicial": "capitulo_1",
+  "capitulos": [
+    {
+      "id": "capitulo_1",
+      "titulo": "A estrada",
+      "arquivo": "capitulo_1.json"
+    },
+    {
+      "id": "capitulo_2",
+      "titulo": "A guarda",
+      "arquivo": "capitulo_2.json"
+    }
+  ]
+}

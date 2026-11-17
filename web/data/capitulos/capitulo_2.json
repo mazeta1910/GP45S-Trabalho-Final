@@ -1,0 +1,34 @@
+{
+  "id": "capitulo_2",
+  "titulo": "A guarda",
+  "cenaInicial": "cena_01",
+  "cenas": [
+    {
+      "id": "cena_01",
+      "texto": "No posto da guarda, um oficial interroga os viajantes. Ele fixa o olhar em você.",
+      "escolhas": [
+        { "id": "a", "texto": "Cooperar com o oficial", "proxima": "cena_02" },
+        { "id": "b", "texto": "Mentir sobre o estranho", "proxima": "cena_03" }
+      ]
+    },
+    {
+      "id": "cena_02",
+      "texto": "Você conta o que viu. O oficial anota tudo e libera a passagem — por enquanto.",
+      "escolhas": [
+        { "id": "a", "texto": "Encerrar o capítulo", "proxima": "fim" }
+      ]
+    },
+    {
+      "id": "cena_03",
+      "texto": "Sua mentira não convence. Dois guardas se aproximam, e a tensão sobe.",
+      "escolhas": [
+        { "id": "a", "texto": "Encerrar o capítulo", "proxima": "fim" }
+      ]
+    },
+    {
+      "id": "fim",
+      "texto": "Fim da demonstração dos capítulos. (GDP-17)",
+      "escolhas": []
+    }
+  ]
+}

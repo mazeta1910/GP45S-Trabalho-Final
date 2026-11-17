@@ -1,9 +1,11 @@
 import { MotorInterface } from "./motorInterface.js";
 import { NavegadorSimples } from "./navegadorSimples.js";
+import { carregarIndice, carregarCapitulo } from "./carregadorCapitulos.js";
 
 const textoEl = document.getElementById("texto-cena");
 const areaEscolhasEl = document.getElementById("area-escolhas");
 const mensagemErroEl = document.getElementById("mensagem-erro");
+const rotuloCapituloEl = document.getElementById("rotulo-capitulo");
 
 function mostrarErro(mensagem) {
   console.error(mensagem);
@@ -11,24 +13,23 @@ function mostrarErro(mensagem) {
   mensagemErroEl.textContent = mensagem;
 }
 
-async function carregarCenas() {
-  const resposta = await fetch("data/cenas-teste.json");
-  if (!resposta.ok) {
-    throw new Error(`Falha ao carregar JSON (${resposta.status}).`);
-  }
-  return resposta.json();
+function atualizarRotuloCapitulo(capitulo) {
+  if (!rotuloCapituloEl) return;
+  const titulo = capitulo.titulo ?? capitulo.id ?? "";
+  rotuloCapituloEl.textContent = titulo ? `Capítulo: ${titulo}` : "";
 }
 
 async function iniciar() {
   try {
-    const colecao = await carregarCenas();
-
-    if (!colecao?.cenaInicial || !Array.isArray(colecao.cenas)) {
-      throw new Error("JSON inválido: espere { cenaInicial, cenas[] }.");
-    }
+    const indice = await carregarIndice();
+    const capituloInicial = await carregarCapitulo(indice, indice.capituloInicial);
 
     const motor = new MotorInterface({ textoEl, areaEscolhasEl });
-    new NavegadorSimples(motor, colecao, mostrarErro);
+    new NavegadorSimples(motor, capituloInicial, {
+      onErro: mostrarErro,
+      onCapitulo: atualizarRotuloCapitulo,
+      carregarCapituloPorId: (id) => carregarCapitulo(indice, id),
+    });
   } catch (erro) {
     mostrarErro(erro.message ?? String(erro));
     textoEl.textContent = "Não foi possível iniciar o protótipo.";

@@ -50,6 +50,17 @@ body {
     #24302a;
 }
 
+.rotulo-capitulo {
+  position: absolute;
+  top: 3%;
+  left: 4%;
+  z-index: 2;
+  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+}
+
 .caixa-dialogo {
   position: absolute;
   left: 4%;

@@ -30,11 +30,18 @@ web/
 ├── index.html
 ├── css/interface.css
 ├── js/
-│   ├── motorInterface.js   # GDP-8 — Motor de interface
-│   ├── navegadorSimples.js # GDP-13 (versão simples)
+│   ├── motorInterface.js      # GDP-8 — Motor de interface
+│   ├── navegadorSimples.js    # GDP-13 + troca de capítulo
+│   ├── carregadorCapitulos.js # GDP-17 — índice + um capítulo por vez
 │   └── main.js
-├── data/cenas-teste.json
-└── GDP-8-MOTOR-INTERFACE.md
+├── data/
+│   ├── cenas-teste.json       # legado (Sprint 1)
+│   └── capitulos/             # GDP-17
+│       ├── indice.json
+│       ├── capitulo_1.json
+│       └── capitulo_2.json
+├── GDP-8-MOTOR-INTERFACE.md
+└── GDP-17-CAPITULOS.md
 ```
 
 ## Sprint 1 — responsabilidades (resumo)

@@ -1,21 +1,42 @@
+import { interpretarDestino } from "./carregadorCapitulos.js";
+
 /**
- * Navegação provisória entre cenas (GDP-13, versão simples da Sprint 1).
- * Depois pode ser trocada por uma máquina de estados completa.
+ * Navegação entre cenas (GDP-13) com suporte a troca de capítulo (GDP-17).
+ * Destino "capitulo:id" carrega outro capítulo via callback assíncrono.
  */
 export class NavegadorSimples {
   /**
    * @param {import("./motorInterface.js").MotorInterface} motor
-   * @param {{ cenaInicial: string, cenas: Array<{ id: string, texto: string, escolhas?: any[] }> }} colecao
-   * @param {(mensagem: string) => void} [onErro]
+   * @param {{ id?: string, titulo?: string, cenaInicial: string, cenas: Array<{ id: string, texto: string, escolhas?: any[] }> }} capitulo
+   * @param {{
+   *   onErro?: (mensagem: string) => void,
+   *   onCapitulo?: (capitulo: any) => void,
+   *   carregarCapituloPorId?: (id: string) => Promise<any>
+   * }} [opcoes]
    */
-  constructor(motor, colecao, onErro = console.error) {
+  constructor(motor, capitulo, opcoes = {}) {
     this.motor = motor;
-    this.onErro = onErro;
-    this.cenas = new Map(colecao.cenas.map((cena) => [cena.id, cena]));
-    this.cenaAtual = null;
+    this.onErro = opcoes.onErro ?? console.error;
+    this.onCapitulo = opcoes.onCapitulo ?? (() => {});
+    this.carregarCapituloPorId = opcoes.carregarCapituloPorId ?? null;
+    this._trocando = false;
 
-    this.motor.aoEscolher((idEscolha) => this._aoEscolher(idEscolha));
-    this.irPara(colecao.cenaInicial);
+    this.motor.aoEscolher((idEscolha) => {
+      void this._aoEscolher(idEscolha);
+    });
+
+    this._definirCapitulo(capitulo);
+  }
+
+  /**
+   * @param {{ id?: string, titulo?: string, cenaInicial: string, cenas: any[] }} capitulo
+   * @param {string} [cenaInicial]
+   */
+  _definirCapitulo(capitulo, cenaInicial = capitulo.cenaInicial) {
+    this.capitulo = capitulo;
+    this.cenas = new Map(capitulo.cenas.map((cena) => [cena.id, cena]));
+    this.onCapitulo(capitulo);
+    this.irPara(cenaInicial);
   }
 
   /**
@@ -24,7 +45,7 @@ export class NavegadorSimples {
   irPara(idCena) {
     const cena = this.cenas.get(idCena);
     if (!cena) {
-      this.onErro(`Cena "${idCena}" não encontrada.`);
+      this.onErro(`Cena "${idCena}" não encontrada no capítulo "${this.capitulo?.id ?? "?"}".`);
       return;
     }
 
@@ -32,7 +53,9 @@ export class NavegadorSimples {
     this.motor.mostrarCena(cena);
   }
 
-  _aoEscolher(idEscolha) {
+  async _aoEscolher(idEscolha) {
+    if (this._trocando) return;
+
     if (!this.cenaAtual?.escolhas) {
       this.onErro(`Escolha "${idEscolha}" inválida na cena atual.`);
       return;
@@ -44,6 +67,32 @@ export class NavegadorSimples {
       return;
     }
 
-    this.irPara(escolha.proxima);
+    let destino;
+    try {
+      destino = interpretarDestino(escolha.proxima);
+    } catch (erro) {
+      this.onErro(erro.message ?? String(erro));
+      return;
+    }
+
+    if (destino.tipo === "cena") {
+      this.irPara(destino.id);
+      return;
+    }
+
+    if (!this.carregarCapituloPorId) {
+      this.onErro(`Troca de capítulo pedida ("${destino.id}"), mas o carregador não foi configurado.`);
+      return;
+    }
+
+    this._trocando = true;
+    try {
+      const proximo = await this.carregarCapituloPorId(destino.id);
+      this._definirCapitulo(proximo);
+    } catch (erro) {
+      this.onErro(erro.message ?? String(erro));
+    } finally {
+      this._trocando = false;
+    }
   }
 }

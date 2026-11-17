@@ -1,0 +1,38 @@
+{
+  "id": "capitulo_1",
+  "titulo": "A estrada",
+  "cenaInicial": "cena_01",
+  "cenas": [
+    {
+      "id": "cena_01",
+      "texto": "Na estrada, um estranho ferido pede ajuda. Ao longe, você ouve os passos de quem o persegue.",
+      "escolhas": [
+        { "id": "a", "texto": "Ajudar o estranho", "proxima": "cena_02" },
+        { "id": "b", "texto": "Seguir viagem", "proxima": "cena_03" },
+        { "id": "c", "texto": "Esconder-se e observar", "proxima": "cena_04" }
+      ]
+    },
+    {
+      "id": "cena_02",
+      "texto": "Você ajuda o estranho a se levantar. Ele agradece e promete retribuir um dia. Ao longe, tochas da guarda se aproximam.",
+      "escolhas": [
+        { "id": "a", "texto": "Ir ao encontro da guarda", "proxima": "capitulo:capitulo_2" }
+      ]
+    },
+    {
+      "id": "cena_03",
+      "texto": "Você segue em frente. Os gritos ficam distantes, mas o brasão da guarda aparece na próxima curva.",
+      "escolhas": [
+        { "id": "a", "texto": "Continuar pela estrada", "proxima": "capitulo:capitulo_2" }
+      ]
+    },
+    {
+      "id": "cena_04",
+      "texto": "Escondido, você vê os perseguidores passarem com o brasão da guarda real. Eles seguem para o posto avançado.",
+      "escolhas": [
+        { "id": "a", "texto": "Seguir os guardas", "proxima": "capitulo:capitulo_2" },
+        { "id": "b", "texto": "Voltar para o estranho", "proxima": "cena_02" }
+      ]
+    }
+  ]
+}
