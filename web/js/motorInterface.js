@@ -1,27 +1,29 @@
 export const MAX_ESCOLHAS = 4;
 
 /**
- * Motor de interface (GDP-8).
+- Motor de interface (GDP-8).
  *
- * Contrato público:
- * - mostrarCena(cena)  → exibe texto e botões (2 a 4 escolhas)
- * - aoEscolher(fn)     → registra callback chamado com o id da escolha
- * - limpar()           → limpa texto e botões
- * - destruir()         → remove listeners
+- Contrato público:
+- - mostrarCena(cena)  → exibe texto e botões (2 a 4 escolhas)
+- - aoEscolher(fn)     → registra callback chamado com o id da escolha
+- - limpar()           → limpa texto e botões
+- - destruir()         → remove listeners
  *
- * Entrada de teclado: teclas 1–4 (e numpad) selecionam a escolha correspondente.
+- Entrada de teclado: teclas 1–4 (e numpad) selecionam a escolha correspondente.
  */
 export class MotorInterface {
   /**
-   * @param {{ textoEl: HTMLElement, areaEscolhasEl: HTMLElement }} refs
+- @param {{ textoEl: HTMLElement, areaEscolhasEl: HTMLElement, cenarioEl?: HTMLElement | null }} refs
    */
-  constructor({ textoEl, areaEscolhasEl }) {
+  constructor({ textoEl, areaEscolhasEl, cenarioEl = document.querySelector(".cenario") }) {
     if (!textoEl || !areaEscolhasEl) {
       throw new Error("MotorInterface: informe textoEl e areaEscolhasEl.");
     }
 
     this.textoEl = textoEl;
     this.areaEscolhasEl = areaEscolhasEl;
+    this.cenarioEl = cenarioEl;
+    this.cenarioAtual = null;
     this.cenaAtual = null;
     this._aoEscolher = null;
     this._bloqueado = false;
@@ -31,7 +33,7 @@ export class MotorInterface {
   }
 
   /**
-   * @param {(idEscolha: string) => void} callback
+- @param {(idEscolha: string) => void} callback
    */
   aoEscolher(callback) {
     if (typeof callback !== "function") {
@@ -41,12 +43,14 @@ export class MotorInterface {
   }
 
   /**
-   * @param {{ id?: string, texto?: string, escolhas?: Array<{ id: string, texto: string, proxima?: string }> }} cena
+- @param {{ id?: string, texto?: string, cenario?: string, escolhas?: Array<{ id: string, texto: string, proxima?: string }> }} cena
    */
   mostrarCena(cena) {
     if (!cena || typeof cena !== "object") {
       throw new Error("MotorInterface.mostrarCena: cena inválida.");
     }
+
+    this._atualizarCenario(cena.cenario ?? "padrao");
 
     this._bloqueado = false;
     this.cenaAtual = cena;
@@ -71,6 +75,18 @@ export class MotorInterface {
       botao.addEventListener("click", () => this._escolher(escolha.id));
       this.areaEscolhasEl.appendChild(botao);
     });
+  }
+
+  _atualizarCenario(novoCenario) {
+    if (!this.cenarioEl || this.cenarioAtual === novoCenario) return;
+
+    this.cenarioAtual = novoCenario;
+    this.cenarioEl.dataset.cenario = novoCenario;
+
+    // Reinicia a animação de fade sempre que o cenário muda
+    this.cenarioEl.classList.remove("fade-ativo");
+    void this.cenarioEl.offsetWidth;
+    this.cenarioEl.classList.add("fade-ativo");
   }
 
   limpar() {
