@@ -1,7 +1,8 @@
 import { interpretarDestino } from "./carregadorCapitulos.js";
 
 /**
- * Navegação entre cenas (GDP-13) com suporte a troca de capítulo (GDP-17).
+ * Navegação entre cenas (GDP-13) com suporte a troca de capítulo (GDP-17)
+ * e gravação de progresso (GDP-11 / GDP-14).
  * Destino "capitulo:id" carrega outro capítulo via callback assíncrono.
  */
 export class NavegadorSimples {
@@ -11,7 +12,9 @@ export class NavegadorSimples {
    * @param {{
    *   onErro?: (mensagem: string) => void,
    *   onCapitulo?: (capitulo: any) => void,
-   *   carregarCapituloPorId?: (id: string) => Promise<any>
+   *   carregarCapituloPorId?: (id: string) => Promise<any>,
+   *   gravador?: import("./gravadorArquivos.js").GravadorArquivos,
+   *   cenaInicial?: string
    * }} [opcoes]
    */
   constructor(motor, capitulo, opcoes = {}) {
@@ -19,13 +22,14 @@ export class NavegadorSimples {
     this.onErro = opcoes.onErro ?? console.error;
     this.onCapitulo = opcoes.onCapitulo ?? (() => {});
     this.carregarCapituloPorId = opcoes.carregarCapituloPorId ?? null;
+    this.gravador = opcoes.gravador ?? null;
     this._trocando = false;
 
     this.motor.aoEscolher((idEscolha) => {
       void this._aoEscolher(idEscolha);
     });
 
-    this._definirCapitulo(capitulo);
+    this._definirCapitulo(capitulo, opcoes.cenaInicial);
   }
 
   /**
@@ -50,6 +54,7 @@ export class NavegadorSimples {
     }
 
     this.cenaAtual = cena;
+    this.gravador?.gravar({ capitulo: this.capitulo?.id, cenaAtual: idCena });
     this.motor.mostrarCena(cena);
   }
 
