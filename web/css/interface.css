@@ -32,12 +32,11 @@ body {
 
 .area-jogo {
   position: relative;
-  width: min(100vw, 1920px);
-  height: min(100vh, 1080px);
+  width: min(100vw, calc(100vh * 16 / 9), 1920px);
   aspect-ratio: 16 / 9;
   max-height: 100vh;
   overflow: hidden;
-  background: var(--fundo);
+  background: #090b10;
 }
 
 .cenario {
@@ -48,6 +47,51 @@ body {
     radial-gradient(ellipse at 30% 40%, #3d4a3a 0%, transparent 55%),
     radial-gradient(ellipse at 70% 60%, #2c3a4a 0%, transparent 50%),
     #24302a;
+  background-size: cover;
+  background-position: center;
+}
+
+.cenario.fade-ativo {
+  animation: fadeCenario 0.7s ease-in-out forwards;
+}
+
+@keyframes fadeCenario {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Cenários com imagens (GDP-18) */
+.cenario[data-cenario="estrada"] {
+  background-image:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.2), rgba(10, 12, 18, 0.65)),
+    url("../assets/estrada.png");
+}
+
+.cenario[data-cenario="floresta"] {
+  background-image:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.2), rgba(10, 12, 18, 0.65)),
+    url("../assets/floresta.jpe");
+}
+
+.cenario[data-cenario="posto_guarda"] {
+  background-image:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.2), rgba(10, 12, 18, 0.65)),
+    url("../assets/guarda-medieval.jpe");
+}
+
+.cenario[data-cenario="interrogatorio"] {
+  background-image:
+    linear-gradient(180deg, rgba(10, 12, 18, 0.25), rgba(10, 12, 18, 0.75)),
+    url("../assets/interrogatorio.jpg");
+}
+
+.cenario[data-cenario="fim"] {
+  background-color: #0e1015;
+  filter: grayscale(0.5) brightness(0.75);
 }
 
 .rotulo-capitulo {
@@ -59,6 +103,7 @@ body {
   letter-spacing: 0.04em;
   color: var(--texto-suave);
   text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
 }
 
 .caixa-dialogo {
