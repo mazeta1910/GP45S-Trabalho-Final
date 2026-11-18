@@ -7,6 +7,7 @@ const textoEl = document.getElementById("texto-cena");
 const areaEscolhasEl = document.getElementById("area-escolhas");
 const mensagemErroEl = document.getElementById("mensagem-erro");
 const rotuloCapituloEl = document.getElementById("rotulo-capitulo");
+const botaoRecomecarEl = document.getElementById("botao-recomecar");
 
 function mostrarErro(mensagem) {
   console.error(mensagem);
@@ -24,6 +25,13 @@ async function iniciar() {
   try {
     const indice = await carregarIndice();
     const gravador = new GravadorArquivos({ onErro: mostrarErro });
+
+    // Botão "Recomeçar": apaga o save e reinicia o jogo do começo.
+    botaoRecomecarEl?.addEventListener("click", () => {
+      if (!confirm("Recomeçar do início? O progresso salvo será apagado.")) return;
+      gravador.apagar();
+      location.reload();
+    });
 
     // Tenta retomar o progresso salvo (capítulo + cena).
     let capituloInicial;

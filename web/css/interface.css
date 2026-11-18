@@ -125,6 +125,27 @@ body {
   z-index: 10;
 }
 
+.botao-recomecar {
+  position: absolute;
+  top: 3%;
+  right: 4%;
+  z-index: 2;
+  appearance: none;
+  border: 1px solid var(--botao-borda);
+  background: var(--botao);
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+
+.botao-recomecar:hover,
+.botao-recomecar:focus-visible {
+  background: var(--botao-hover);
+  color: var(--texto);
+}
+
 @media (max-width: 1280px) {
   .caixa-dialogo {
     min-height: 26%;
