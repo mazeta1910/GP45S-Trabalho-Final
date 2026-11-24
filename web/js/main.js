@@ -9,6 +9,11 @@ const mensagemErroEl = document.getElementById("mensagem-erro");
 const rotuloCapituloEl = document.getElementById("rotulo-capitulo");
 const botaoRecomecarEl = document.getElementById("botao-recomecar");
 
+// Elementos do Menu Inicial (Task 10)
+const telaInicialEl = document.getElementById("tela-inicial");
+const btnContinuarEl = document.getElementById("btn-continuar");
+const btnNovoJogoEl = document.getElementById("btn-novo-jogo");
+
 function mostrarErro(mensagem) {
   console.error(mensagem);
   mensagemErroEl.hidden = false;
@@ -33,34 +38,49 @@ async function iniciar() {
       location.reload();
     });
 
-    // Tenta retomar o progresso salvo (capítulo + cena).
-    let capituloInicial;
-    let cenaInicial;
-
-    const salvo = gravador.ler();
-    if (salvo?.capitulo) {
-      try {
-        const capSalvo = await carregarCapitulo(indice, salvo.capitulo);
-        if (capSalvo.cenas.some((c) => c.id === salvo.cenaAtual)) {
-          capituloInicial = capSalvo;
-          cenaInicial = salvo.cenaAtual;
-        }
-      } catch {
-        // Save antigo ou inválido: começa do início.
-      }
+    // Se já existir save, mostra o botão "Continuar" no menu inicial
+    if (gravador.existe()) {
+      btnContinuarEl.hidden = false;
     }
 
-    // Sem save válido, começa do capítulo inicial do índice.
-    capituloInicial ??= await carregarCapitulo(indice, indice.capituloInicial);
+    async function entrarNoJogo(continuarSave) {
+      let capituloInicial;
+      let cenaInicial;
 
-    const motor = new MotorInterface({ textoEl, areaEscolhasEl });
-    new NavegadorSimples(motor, capituloInicial, {
-      onErro: mostrarErro,
-      onCapitulo: atualizarRotuloCapitulo,
-      carregarCapituloPorId: (id) => carregarCapitulo(indice, id),
-      gravador,
-      cenaInicial,
-    });
+      if (continuarSave) {
+        const salvo = gravador.ler();
+        if (salvo?.capitulo) {
+          try {
+            const capSalvo = await carregarCapitulo(indice, salvo.capitulo);
+            if (capSalvo.cenas.some((c) => c.id === salvo.cenaAtual)) {
+              capituloInicial = capSalvo;
+              cenaInicial = salvo.cenaAtual;
+            }
+          } catch {
+            // Save antigo ou inválido: começa do início.
+          }
+        }
+      } else {
+        gravador.apagar();
+      }
+
+      capituloInicial ??= await carregarCapitulo(indice, indice.capituloInicial);
+
+      const motor = new MotorInterface({ textoEl, areaEscolhasEl });
+      new NavegadorSimples(motor, capituloInicial, {
+        onErro: mostrarErro,
+        onCapitulo: atualizarRotuloCapitulo,
+        carregarCapituloPorId: (id) => carregarCapitulo(indice, id),
+        gravador,
+        cenaInicial,
+      });
+
+      // Esconde o menu inicial e revela o jogo
+      telaInicialEl.hidden = true;
+    }
+
+    btnContinuarEl.addEventListener("click", () => void entrarNoJogo(true));
+    btnNovoJogoEl.addEventListener("click", () => void entrarNoJogo(false));
   } catch (erro) {
     mostrarErro(erro.message ?? String(erro));
     textoEl.textContent = "Não foi possível iniciar o protótipo.";

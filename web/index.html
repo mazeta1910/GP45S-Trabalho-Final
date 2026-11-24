@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GDP — Interface de escolhas morais</title>
   <link rel="stylesheet" href="css/interface.css" />
 </head>
+
 <body>
   <main class="area-jogo" aria-label="Área do jogo">
+    <section id="tela-inicial" class="tela-inicial" aria-label="Menu inicial">
+      <div class="painel-inicio">
+        <h1 class="titulo-jogo">GDP — Escolhas Morais</h1>
+        <button id="btn-continuar" class="botao-menu" type="button" hidden>Continuar</button>
+        <button id="btn-novo-jogo" class="botao-menu" type="button">Novo Jogo</button>
+      </div>
+    </section>
     <div class="cenario" aria-hidden="true"></div>
     <p id="rotulo-capitulo" class="rotulo-capitulo" aria-live="polite"></p>
     <button id="botao-recomecar" class="botao-recomecar" type="button">Recomeçar</button>
@@ -22,4 +31,5 @@
 
   <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
