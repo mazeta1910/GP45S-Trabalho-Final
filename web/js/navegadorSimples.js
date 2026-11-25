@@ -58,6 +58,12 @@ export class NavegadorSimples {
     this.motor.mostrarCena(cena);
   }
 
+  reiniciarCapitulo() {
+    if (this._trocando || !this.capitulo) return false;
+    this._definirCapitulo(this.capitulo);
+    return true;
+  }
+
   async _aoEscolher(idEscolha) {
     if (this._trocando) return;
 

@@ -170,11 +170,16 @@ body {
   z-index: 10;
 }
 
-.botao-recomecar {
+.barra-acoes {
   position: absolute;
   top: 3%;
   right: 4%;
   z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.botao-acao {
   appearance: none;
   border: 1px solid var(--botao-borda);
   background: var(--botao);
@@ -185,8 +190,8 @@ body {
   cursor: pointer;
 }
 
-.botao-recomecar:hover,
-.botao-recomecar:focus-visible {
+.botao-acao:hover,
+.botao-acao:focus-visible {
   background: var(--botao-hover);
   color: var(--texto);
 }

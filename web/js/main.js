@@ -8,6 +8,7 @@ const areaEscolhasEl = document.getElementById("area-escolhas");
 const mensagemErroEl = document.getElementById("mensagem-erro");
 const rotuloCapituloEl = document.getElementById("rotulo-capitulo");
 const botaoRecomecarEl = document.getElementById("botao-recomecar");
+const botaoReiniciarCapituloEl = document.getElementById("botao-reiniciar-capitulo");
 
 // Elementos do Menu Inicial (Task 10)
 const telaInicialEl = document.getElementById("tela-inicial");
@@ -67,12 +68,19 @@ async function iniciar() {
       capituloInicial ??= await carregarCapitulo(indice, indice.capituloInicial);
 
       const motor = new MotorInterface({ textoEl, areaEscolhasEl });
-      new NavegadorSimples(motor, capituloInicial, {
+      const navegador = new NavegadorSimples(motor, capituloInicial, {
         onErro: mostrarErro,
         onCapitulo: atualizarRotuloCapitulo,
         carregarCapituloPorId: (id) => carregarCapitulo(indice, id),
         gravador,
         cenaInicial,
+      });
+
+      // Botão "Reiniciar capítulo": volta à primeira cena do capítulo atual.
+      botaoReiniciarCapituloEl?.addEventListener("click", () => {
+        botaoReiniciarCapituloEl.blur();
+        if (!confirm("Reiniciar este capítulo? Você volta para a primeira cena dele.")) return;
+        navegador.reiniciarCapitulo();
       });
 
       // Esconde o menu inicial e revela o jogo
